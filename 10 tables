@@ -1,0 +1,97 @@
+CREATE TABLE PlayoffRound (
+  id int(13) NOT NULL,
+  team1Id int(13) NOT NULL, s
+  team2lId int(13) NOT NULL, 
+  starTime date NOT NULL,
+  endTime date NOT NULL,
+  rundNum int(13) NOT NULL,
+  PRIMARY KEY (id,starTime)
+);
+
+CREATE TABLE  HokeyGame(
+  id int(13) NOT NULL,
+  rounId int(13) NOT NULL,
+  starTime date NOT NULL,
+  description text NOT NULl,
+  team1Id int(13) NOT NULL,
+  team2Id int(13) NOT NULL,
+  PRIMARY KEY (id,starTime)
+);
+
+CREATE TABLE GameScores(
+  id int(13) NOT NULL,
+  team1Score int(13) NOT NULL,
+  team2Score int(13) NOT NULL,
+  PRIMARY KEY (id, team1Score)
+);
+
+CREATE TABLE RondStats(
+  id int(13) NOT NULL,
+  numShutout int(13) NOT NULL,
+  goalLeaderId int(13) NOT NULL,
+  assistLeaderId int(13) NOT NULL,
+  penaltyLeaderId int(13) NOT NULL,
+  plusMinusLeaderId int(13) NOT NULL,
+  faceoffsWonLeaderId int(13) NOT NULL,
+  sogLeanderId int(13) NOT NULL,
+  PRIMARY KEY (id,numShutout)
+);
+
+CREATE TABLE HockeyTeam(
+  id int(13) NOT NULL,
+  name varchar(10) NOT NULL,
+  logo text NOT NULL,
+  PRIMARY KEY (id, name)
+);
+
+CREATE TABLE HockeyTeamPlayer (
+  id int(13) NOT NULL,
+  HockeyTeamId int(13) NOT NULL,
+  firstName varchar(10) NOT NULL,
+  lastName varchar(10) NOT NULL,
+  jerseyNum int(13) NOT NULL,
+  position date NOT NULL,
+  PRIMARY KEY (id,HockeyTeamId)
+);
+
+CREATE TABLE UserStatsPicks (
+  id int(13) NOT NULL,
+  roundid int(13) NOT NULL,
+  goalLeaderid int(13) NOT NULL,
+  assistLeaderid int(13) NOT NULL,
+  penaltyLeader int(13) NOT NULL,
+  plusMinusLeaderid int(13) NOT NULL,
+  faceoffsWonLeaderid int(13) NOT NULL,
+  songLeaderid int(13) NOT NULL,
+  numShutouts int(13) NOT NULL,
+  userid int(13) NOT NULL,  
+  PRIMARY KEY (id, roundId)
+);
+
+CREATE TABLE User(
+  id int(13) NOT NULL,
+  username varchar(15) NOT NULL,
+  password varchar(30) NOT NULL,
+  PRIMARY KEY (id, username)
+);
+
+CREATE TABLE UserScorePicks(
+  id int(13) NOT NULL,
+  hockeyGameId int(13) NOT NULL,
+  team1Score int(13) NOT NULL,
+  team2Score int(13) NOT NULL,
+  userId int(13) NOT NULL,
+  PRIMARY KEY  (id, hockeyGameId)
+); 
+
+CREATE TABLE UserInfo ( 
+  id int(13) NOT NULL,
+  firstName varchar(15) NOT NULL, 
+  lastName varchar(15) NOT NULl,
+  email varchar(15) NOT NULl,
+  round1Points int(13) NOT NULL,
+  round2Points int(13) NOT NULL,
+  round3Points int(13) NOT NULL,
+  round4Pointsint(13) NOT NULL,
+  PRIMARY KEY (id, firstName)
+);
