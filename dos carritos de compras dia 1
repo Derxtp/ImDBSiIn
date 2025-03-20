@@ -1,0 +1,72 @@
+este es mi codigo y lo que hice hoy 
+talvez no sea del todo correcto todo pero es todo lo que hice hoy mas los avances de pythonanywhere 
+
+CREATE TABLE Carrito_1( 
+id int(13) NOT NULL,
+Azucar varchar(13) NOT NULL, 
+pan varchar(13) NOT NULL,
+jugo varchar(13) NOT NULL,
+refresco varchar(13) NOT NULL,
+Harina varchar(13) NOT NULL
+PRIMARY KEY (id,Azucar)
+);
+CREATE TABLE Carrito_2(
+id int(13) NOT NULL,
+Azucar varchar(13) NOT NULL, 
+pan varchar(13) NOT NULL,
+Mantequilla varchar(13) NOT NULL,
+Queso varchar(13) NOT NULL,
+Manzana  varchar(13) NOT NULL
+PRIMARY KEY (id,pan)
+);
+
+
+CREATE TABLE Carrito_1(
+    Articulo VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE Carrito_2(
+    Articulo VARCHAR(30) NOT NULL
+);
+
+
+INSERT INTO Carrito_1 (Articulo) VALUES
+('Azucar'),
+('Pan'),
+('jugo'),
+('refresco'),
+('Harina');
+
+INSERT INTO Carrito_2 (Articulo) VALUES
+('Azucar'),
+('Pan'),
+('Mantequilla'),
+('Queso'),
+('Manzana');
+
+mysql> select * from Carrito_1;
++----------+
+| Articulo |
++----------+
+| Azucar   |
+| Pan      |
+| jugo     |
+| refresco |
+| Harina   |
++----------+
+5 rows in set (0.01 sec)
+
+
+mysql> 
+mysql> select * from Carrito_2;
++-------------+
+| Articulo    |
++-------------+
+| Azucar      |
+| Pan         |
+| Mantequilla |
+| Queso       |
+| Manzana     |
++-------------+
+5 rows in set (0.00 sec)
+
