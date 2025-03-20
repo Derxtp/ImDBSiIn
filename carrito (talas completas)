@@ -1,0 +1,44 @@
+mysql> select * from Carrito_1 right join Carrito_2 on Carrito_1.Articulo = Carrito_2.Articulo;
++----------+-------------+
+| Articulo | Articulo    |
++----------+-------------+
+| Azucar   | Azucar      |
+| Pan      | Pan         |
+| NULL     | Mantequilla |
+| NULL     | Queso       |
+| NULL     | Manzana     |
++----------+-------------+
+5 rows in set (0.00 sec)
+mysql> select * from Carrito_1 left join Carrito_2 on Carrito_1.Articulo = Carrito_2.Articulo;
++----------+----------+
+| Articulo | Articulo |
++----------+----------+
+| Azucar   | Azucar   |
+| Pan      | Pan      |
+| jugo     | NULL     |
+| refresco | NULL     |
+| Harina   | NULL     |
++----------+----------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+mysql> select * from Carrito_1 left join Carrito_2 on Carrito_1.Articulo = Carrito_2.Articulo
+    -> UNION 
+    -> select * from Carrito_1 right join Carrito_2 on Carrito_1.Articulo = Carrito_2.Articulo;
++----------+-------------+
+| Articulo | Articulo    |
++----------+-------------+
+| Azucar   | Azucar      |
+| Pan      | Pan         |
+| jugo     | NULL        |
+| refresco | NULL        |
+| Harina   | NULL        |
+| NULL     | Mantequilla |
+| NULL     | Queso       |
+| NULL     | Manzana     |
++----------+-------------+
+8 rows in set (0.01 sec)
