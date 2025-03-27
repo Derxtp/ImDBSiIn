@@ -1,0 +1,155 @@
+este es el script usado:
+
+CREATE TABLE CONJUNTO_ENTEROS (
+    Entero INT NOT NULL
+);
+
+INSERT INTO CONJUNTO_ENTEROS (Entero) VALUES 
+(5),
+(6),
+(10),
+(10),
+(13),
+(14),
+(17),
+(20),
+(81),
+(90),
+(76);
+
+
+-- Media (Promedio)
+SELECT AVG(Entero) AS Media
+FROM CONJUNTO_ENTEROS;
+
+-- Mediana (Valor central)
+SELECT Entero AS Mediana
+FROM (
+    SELECT Entero, ROW_NUMBER() OVER (ORDER BY Entero) AS fila,
+           COUNT(*) OVER () AS total
+    FROM CONJUNTO_ENTEROS
+) subconsulta
+WHERE fila IN (CEIL(total / 2), FLOOR((total + 1) / 2));
+
+-- Moda (Número más frecuente)
+SELECT Entero AS Moda
+FROM CONJUNTO_ENTEROS
+GROUP BY Entero
+ORDER BY COUNT(*) DESC, Entero
+LIMIT 1;
+
+-- Rango (Máximo - Mínimo)
+SELECT (MAX(Entero) - MIN(Entero)) AS Rango
+FROM CONJUNTO_ENTEROS;
+
+
+
+
+
+
+esta es la consola :
+
+
+
+
+mysql> CREATE TABLE CONJUNTO_ENTEROS (
+    ->     Entero INT NOT NULL
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> INSERT INTO CONJUNTO_ENTEROS (Entero) VALUES 
+    -> (5),
+    -> (6),
+    -> (10),
+    -> (10),
+    -> (13),
+    -> (14),
+    -> (17),
+    -> (20),
+    -> (81),
+    -> (90),
+    -> (76);
+Query OK, 11 rows affected (0.01 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++-------------------------+
+| Tables_in_DERXPT$DERXTP |
++-------------------------+
+| CONJUNTO_ENTEROS        |
+| Carrito_1               |
+| Carrito_2               |
+| EMPLEADOS               |
+| FLUJOS_DE_TRABAJO       |
+| LICENCIAS_EMPLEADOS     |
+| Predicados              |
++-------------------------+
+7 rows in set (0.00 sec)
+
+mysql> -- Media (Promedio)
+mysql> SELECT AVG(Entero) AS Media
+    -> FROM CONJUNTO_ENTEROS;
++---------+
+| Media   |
++---------+
+| 31.0909 |
++---------+
+1 row in set (0.00 sec)
+mysql> -- Mediana (Valor central)
+mysql> SELECT Entero AS Mediana
+    -> FROM (
+    ->     SELECT Entero, ROW_NUMBER() OVER (ORDER BY Entero) AS fila,
+    ->            COUNT(*) OVER () AS total
+    ->     FROM CONJUNTO_ENTEROS
+    -> ) subconsulta
+    -> WHERE fila IN (CEIL(total / 2), FLOOR((total + 1) / 2));
++---------+
+| Mediana |
++---------+
+|      14 |
++---------+
+1 row in set (0.01 sec)
+
+mysql> 
+mysql> -- Moda (Número más frecuente)
+mysql> SELECT Entero AS Moda
+    -> FROM CONJUNTO_ENTEROS
+    -> GROUP BY Entero
+    -> ORDER BY COUNT(*) DESC, Entero
+    -> LIMIT 1;
++------+
+| Moda |
++------+
+|   10 |
++------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> -- Rango (Máximo - Mínimo)
+mysql> SELECT (MAX(Entero) - MIN(Entero)) AS Rango
+    -> FROM CONJUNTO_ENTEROS;
++-------+
+| Rango |
++-------+
+|    85 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select * from CONJUNTO_ENTEROS;
++--------+
+| Entero |
++--------+
+|      5 |
+|      6 |
+|     10 |
+|     10 |
+|     13 |
+|     14 |
+|     17 |
+|     20 |
+|     81 |
+|     90 |
+|     76 |
++--------+
+11 rows in set (0.00 sec)
