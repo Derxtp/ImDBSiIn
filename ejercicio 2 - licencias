@@ -1,0 +1,158 @@
+el script usado:
+
+CREATE TABLE LICENCIAS_EMPLEADOS (
+    Id_empleado INT,
+    Licencia VARCHAR(10)
+);
+
+INSERT INTO LICENCIAS_EMPLEADOS VALUES
+(1001, 'Tipo A'),
+(1001, 'Tipo B'),
+(1001, 'Tipo C'),
+(2002, 'Tipo A'),
+(2002, 'Tipo B'),
+(2002, 'Tipo C'),
+(3003, 'Tipo D'),
+(3003, 'Tipo D'),
+(4004, 'Tipo A'),
+(4004, 'Tipo B'),
+(4004, 'Tipo D'),
+(5005, 'Tipo A'),
+(5005, 'Tipo B'),
+(5005, 'Tipo D');
+
+
+SELECT
+    A.Id_empleado AS Empleado1,
+    B.Id_empleado AS Empleado2,
+    COUNT(A.Licencia) AS Coincidencias
+FROM 
+    LICENCIAS_EMPLEADOS A
+JOIN 
+    LICENCIAS_EMPLEADOS B
+ON 
+    A.Licencia = B.Licencia AND A.Id_empleado != B.Id_empleado
+GROUP BY 
+    A.Id_empleado, B.Id_empleado
+HAVING 
+    Coincidencias > 0;
+
+
+
+
+la consola:
+
+
+
+
+
+
+mysql> show tables;
++-------------------------+
+| Tables_in_DERXPT$DERXTP |
++-------------------------+
+| Carrito_1               |
+| Carrito_2               |
+| EMPLEADOS               |
+| FLUJOS_DE_TRABAJO       |
+| Predicados              |
++-------------------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE LICENCIAS_EMPLEADOS (
+    ->     Id_empleado INT,
+    ->     Licencia VARCHAR(10)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> 
+mysql> INSERT INTO LICENCIAS_EMPLEADOS VALUES
+    -> (1001, 'Tipo A'),
+    -> (1001, 'Tipo B'),
+    -> (1001, 'Tipo C'),
+    -> (2002, 'Tipo A'),
+    -> (2002, 'Tipo B'),
+    -> (2002, 'Tipo C'),
+    -> (3003, 'Tipo D'),
+    -> (3003, 'Tipo D'),
+    -> (4004, 'Tipo A'),
+    -> (4004, 'Tipo B'),
+    -> (4004, 'Tipo D'),
+    -> (5005, 'Tipo A'),
+    -> (5005, 'Tipo B'),
+    -> (5005, 'Tipo D');
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++-------------------------+
+| Tables_in_DERXPT$DERXTP |
++-------------------------+
+| Carrito_1               |
+| Carrito_2               |
+| EMPLEADOS               |
+| FLUJOS_DE_TRABAJO       |
+| LICENCIAS_EMPLEADOS     |
+| Predicados              |
++-------------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from LICENCIAS_EMPLEADOS;
++-------------+----------+
+| Id_empleado | Licencia |
++-------------+----------+
+|        1001 | Tipo A   |
+|        1001 | Tipo B   |
+|        1001 | Tipo C   |
+|        2002 | Tipo A   |
+|        2002 | Tipo B   |
+|        2002 | Tipo C   |
+|        3003 | Tipo D   |
+|        3003 | Tipo D   |
+|        4004 | Tipo A   |
+|        4004 | Tipo B   |
+|        4004 | Tipo D   |
+|        5005 | Tipo A   |
+|        5005 | Tipo B   |
+|        5005 | Tipo D   |
++-------------+----------+
+14 rows in set (0.00 sec)
+
+
+
+
+mysql> SELECT
+    ->     A.Id_empleado AS Empleado1,
+    ->     B.Id_empleado AS Empleado2,
+    ->     COUNT(A.Licencia) AS Coincidencias
+    -> FROM 
+    ->     LICENCIAS_EMPLEADOS A
+    -> JOIN 
+    ->     LICENCIAS_EMPLEADOS B
+    -> ON 
+    ->     A.Licencia = B.Licencia AND A.Id_empleado != B.Id_empleado
+    -> GROUP BY 
+    ->     A.Id_empleado, B.Id_empleado
+    -> HAVING 
+    ->     Coincidencias > 0;
++-----------+-----------+---------------+
+| Empleado1 | Empleado2 | Coincidencias |
++-----------+-----------+---------------+
+|      5005 |      1001 |             2 |
+|      4004 |      1001 |             2 |
+|      2002 |      1001 |             3 |
+|      5005 |      2002 |             2 |
+|      4004 |      2002 |             2 |
+|      1001 |      2002 |             3 |
+|      5005 |      3003 |             2 |
+|      4004 |      3003 |             2 |
+|      5005 |      4004 |             3 |
+|      2002 |      4004 |             2 |
+|      1001 |      4004 |             2 |
+|      3003 |      4004 |             2 |
+|      4004 |      5005 |             3 |
+|      2002 |      5005 |             2 |
+|      1001 |      5005 |             2 |
+|      3003 |      5005 |             2 |
++-----------+-----------+---------------+
+16 rows in set (0.00 sec)
