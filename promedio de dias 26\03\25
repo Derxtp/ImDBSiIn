@@ -1,0 +1,75 @@
+CREATE TABLE FlujosDeTrabajo (
+    Desarrollo VARCHAR(20) NOT NULL,
+    Terminacion DATE NOT NULL
+);
+
+INSERT INTO FlujosDeTrabajo (Desarrollo, Terminacion) VALUES 
+('RestAPI', STR_TO_DATE('06/01/2024', '%m/%d/%Y')),
+('RestAPI', STR_TO_DATE('06/14/2024', '%m/%d/%Y')),
+('RestAPI', STR_TO_DATE('06/15/2024', '%m/%d/%Y')),
+('Web', STR_TO_DATE('06/01/2024', '%m/%d/%Y')),
+('Web', STR_TO_DATE('06/02/2024', '%m/%d/%Y')),
+('Web', STR_TO_DATE('06/19/2024', '%m/%d/%Y')),
+('App', STR_TO_DATE('05/15/2024', '%m/%d/%Y')),
+('App', STR_TO_DATE('06/01/2024', '%m/%d/%Y')),
+('App', STR_TO_DATE('06/30/2024', '%m/%d/%Y'));
+
+
+WITH Diferencias AS (
+    SELECT 
+        Desarrollo,
+        Terminacion,
+        LAG(Terminacion) OVER (PARTITION BY Desarrollo ORDER BY Terminacion) AS FechaAnterior,
+        DATEDIFF(Terminacion, LAG(Terminacion) OVER (PARTITION BY Desarrollo ORDER BY Terminacion)) AS DiasEntreIteraciones
+    FROM FlujosDeTrabajo
+)
+SELECT 
+    Desarrollo,
+    ROUND(AVG(DiasEntreIteraciones)) AS Promedio
+FROM Diferencias
+WHERE FechaAnterior IS NOT NULL
+GROUP BY Desarrollo;
+
+
+
+
+consola:
+
+mysql> WITH Diferencias AS (
+    ->     SELECT 
+    ->         Desarrollo,
+    ->         Terminacion,
+    ->         LAG(Terminacion) OVER (PARTITION BY Desarrollo ORDER BY Terminacion) AS FechaAnterior,
+    ->         DATEDIFF(Terminacion, LAG(Terminacion) OVER (PARTITION BY Desarrollo ORDER BY Terminacion)) AS DiasEntreIteraciones
+    ->     FROM FlujosDeTrabajo
+    -> )
+    -> SELECT 
+    ->     Desarrollo,
+    ->     ROUND(AVG(DiasEntreIteraciones)) AS Promedio
+    -> FROM Diferencias
+    -> WHERE FechaAnterior IS NOT NULL
+    -> GROUP BY Desarrollo;
++------------+----------+
+| Desarrollo | Promedio |
++------------+----------+
+| App        |       23 |
+| RestAPI    |        7 |
+| Web        |        9 |
++------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from FlujosDeTrabajo;
++------------+-------------+
+| Desarrollo | Terminacion |
++------------+-------------+
+| RestAPI    | 2024-06-01  |
+| RestAPI    | 2024-06-14  |
+| RestAPI    | 2024-06-15  |
+| Web        | 2024-06-01  |
+| Web        | 2024-06-02  |
+| Web        | 2024-06-19  |
+| App        | 2024-05-15  |
+| App        | 2024-06-01  |
+| App        | 2024-06-30  |
++------------+-------------+
+9 rows in set (0.00 sec)
