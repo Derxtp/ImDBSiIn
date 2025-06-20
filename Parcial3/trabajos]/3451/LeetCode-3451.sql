@@ -1,0 +1,25 @@
+WITH InvalidIPs AS (
+SELECT ip
+FROM logs
+GROUP BY ip
+HAVING
+-- Check for exactly 4 octets
+LENGTH(ip) - LENGTH(REPLACE(ip, '.', '')) <> 3 OR
+
+    SUM(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 1), '.', -1) AS UNSIGNED) > 255) > 0 OR
+    SUM(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 2), '.', -1) AS UNSIGNED) > 255) > 0 OR
+    SUM(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 3), '.', -1) AS UNSIGNED) > 255) > 0 OR
+    SUM(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 4), '.', -1) AS UNSIGNED) > 255) > 0 OR
+    
+    SUM(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 1), '.', -1) LIKE '0%' AND LENGTH(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 1), '.', -1)) > 1) > 0 OR
+    SUM(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 2), '.', -1) LIKE '0%' AND LENGTH(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 2), '.', -1)) > 1) > 0 OR
+    SUM(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 3), '.', -1) LIKE '0%' AND LENGTH(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 3), '.', -1)) > 1) > 0 OR
+    SUM(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 4), '.', -1) LIKE '0%' AND LENGTH(SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 4), '.', -1)) > 1) > 0
+)
+SELECT
+l.ip,
+COUNT(l.ip) AS invalid_count
+FROM logs l
+WHERE l.ip IN (SELECT ip FROM InvalidIPs)
+GROUP BY l.ip
+ORDER BY invalid_count DESC, l.ip DESC;
